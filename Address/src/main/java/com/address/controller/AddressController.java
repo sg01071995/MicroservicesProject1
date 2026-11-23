@@ -5,10 +5,7 @@ import com.address.model.dto.AddressRequest;
 import com.address.service.AddressService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,4 +25,28 @@ public class AddressController {
         return new ResponseEntity<>(savedAddresses, HttpStatus.CREATED);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<List<AddressDto>> updateAddress(@RequestBody AddressRequest addressRequest) {
+//        addressRequest.setEmpId(empId);
+        List<AddressDto> response = addressService.updateAddress(addressRequest);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/all-addresses")
+    public ResponseEntity<List<AddressDto>> getAllAddress() {
+        List<AddressDto> response = addressService.getAllAddress();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{addressId}")
+    public ResponseEntity<AddressDto> getSingleAddress(@PathVariable Long addressId) {
+        AddressDto response = addressService.getSingleAddress(addressId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{addressId}")
+    public ResponseEntity<Void> deleteAddress(@PathVariable Long addressId) {
+        addressService.deleteAddress(addressId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
